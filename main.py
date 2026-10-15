@@ -200,6 +200,40 @@ def delete_post():
     connection.commit()
     print ("Posts deleted successdully!")
 
+#Analytics report
+
+def analytics_report ():
+    print ("----Analytics Report----")
+
+    cursor.execute("""
+        SELECT
+            COUNT(*) AS total_posts,
+            SUM(likes) AS total_likes,
+            AVG(likes) AS avg_likes,
+            SUM(comments) AS total_comments,
+            AVG(comments) AS avg_comments,
+            SUM(shares) AS total_shares
+        FROM posts
+""")
+
+    report = cursor.fetchone()
+
+    print("\nPOST SUMMARY")
+    print("----------------------------------------")
+    print(f"Total Posts:       {report[0]}")
+
+    print("\nENGAGEMENT")
+    print("----------------------------------------")
+    print(f"Total Likes:       {report[1]}")
+    print(f"Average Likes:     {report[2]:.2f}")
+    print(f"Total Comments:    {report[3]}")
+    print(f"Average Comments:  {report[4]:.2f}")
+    print(f"Total Shares:      {report[5]}")
+
+    print("\n========================================")
+
+    connection.commit()
+
 
 
 def show_menu():
@@ -211,7 +245,8 @@ def show_menu():
         print("2. View Posts")
         print("3. Update Post")
         print("4. Delete Post")
-        print("5. Exit")
+        print("5. Analytics Report")
+        print("6. Exit") 
 
         choice = input("\nChoose an option: ")
 
@@ -228,7 +263,10 @@ def show_menu():
             delete_post()
 
         elif choice == "5":
-            print("Goodbye!")
+            analytics_report()
+
+        elif choice == "6":
+            print ("Goodbye!")
             break
 
         else:
